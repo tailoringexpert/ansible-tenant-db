@@ -1,0 +1,47 @@
+---
+db_home: /app
+db_changelog_home: "{{ db_home }}/changelogs"
+db_liquibase_home: "{{ db_home }}/liquibase"
+db_tailoringexpert_url: jdbc:mariadb://localhost:3306/tailoringexpert
+db_tailoringexpert_priv: tailoringexpert.*:ALL
+db_tailoringexpert_host: "%"
+
+db_tailoringexpert_password: changeMe!
+
+db_directories: [ 
+  "{{ db_changelog_home }}",
+  "{{ db_liquibase_home }}"
+]  
+
+platform:
+  name: tailoringexpert
+  database:
+    name: tailoringexpert
+    password: "{{ db_tailoringexpert_password }}"
+    url: "{{ db_tailoringexpert_url }}"
+    priv: "{{ db_tailoringexpert_priv }}"
+    host: "{{ db_tailoringexpert_host }}"
+    changelog: 
+      name: db-tailoringexpert/db.changelog-root.xml 
+      src: "{{ app_version }}/tailoringexpert-db-{{ app_version }}{{ app_snapshot }}-liquibase.zip"
+      dest: "{{ db_changelog_home }}/"  
+      remote_src: no
+      clear_checksums: false
+      
+tenants: []
+#  - name: tenant
+#    database:
+#      name: tenant
+#      password: "{{ db_tenant_password }}"
+#      url: jdbc:mariadb://localhost:3306/tailoringexpert_tenant
+#      priv: tailoringexpert_tenant.*:ALL
+#      host: "%"
+#      changelog: 
+#        name: db-tailoringexpert-tenant/db.changelog-root.xml   
+#        src: "{{ app_version }}/tenant/tailoringexpert-tenant-db-{{ app_version }}{{ app_snapshot }}-liquibase.zip"
+#        dest: "{{ db_changelog_home }}/"  
+#        remote_src: no
+#        clear_checksums: false
+  
+ansiblelog:
+  db: no
