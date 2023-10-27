@@ -39,8 +39,13 @@
     remote_src: "{{ tenant.database.changelog.remote_src | default('no') }}"
     owner: "{{ user }}"
     group: "{{ group }}"    
-  
-- name: "{{ tenant.name | upper }} | install changelog"
+
+- name: "{{ tenant.name | upper }} | install {{ tenant.name | lower }} changelog"
   shell: 
     cmd: "{{ db_liquibase_home }}/liquibase --username={{ tenant.database.name }} --password={{ tenant.database.password }} --url={{ tenant.database.url }} --changeLogFile={{ tenant.database.changelog.name }} update"
+    chdir: "{{ db_changelog_home }}"
+
+- name: "{{ tenant.name | upper }} | install platform changelog"
+  shell:
+    cmd: "{{ db_liquibase_home }}/liquibase --username={{ tenant.database.name }} --password={{ tenant.database.password }} --url={{ tenant.database.url }} --changeLogFile={{ platform.database.changelog.name }} update"
     chdir: "{{ db_changelog_home }}"
